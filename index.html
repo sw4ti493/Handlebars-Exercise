@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Handlebars.js Practice</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <style>
+        .item {
+            display: none;
+        }
+
+        #text-danger {
+            color: red;
+        }
+
+        #text-success{
+            color: green;
+        }
+    </style>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v2.0.0.js"></script>
+
+<script>
+var data = {
+    info: [
+{code:{letters: 'BY'} , name:{nameValue: 'Belarus'}, population:{value: '9,685,000', popClass: 'text-danger'}, english:{className: 'false'}},
+{code:{letters: 'BZ'} , name:{nameValue: 'Belize'}, population:{value: '314,522', popClass: 'text-success'}, english:{className: "glyphicon glyphicon-ok"}},
+{code:{letters: 'CA'} , name:{nameValue: 'Canada'}, population:{value: '33,679,000', popClass: 'text-danger'}, english:{className: "glyphicon glyphicon-ok"}},
+{code:{letters: 'CC'} , name:{nameValue: 'Cocos [Keeling] Islands'}, population:{value: '628', popClass: ''}, english:{className: "glyphicon glyphicon-ok"}},
+{code:{letters: 'CD'} , name:{nameValue: 'Democratic Reuplic of Congo'}, population:{value: '70,916,439', popClass: 'text-danger'}, english:{className: 'false'}},
+{code:{letters: 'CF'} , name:{nameValue: 'Central African Republic'}, population:{value: '4,844,927', popClass: 'text-success'}, english:{className: 'false'}},
+{code:{letters: 'CG'} , name:{nameValue: 'Republic of the Congo'}, population:{value: '303,9126', popClass: 'text-success'}, english:{className: 'false'}},
+{code:{letters: 'CH'} , name:{nameValue: 'Switzerland'}, population:{value: '7,581,000', popClass: 'text-danger'}, english:{className: 'false'}}
+]
+};
+
+$(function() {
+var source   = $("#countryTemplate").html();
+var template = Handlebars.compile(source);
+
+var refreshTable = function(){
+var html = template(data);
+$(".output").html(html);
+};
+
+refreshTable();
+
+Handlebars.registerHelper("colors", function(value){
+  if (value > 5000000) return "text-danger";
+  else if(value > 100000) return "text-success";
+  else return "" ;
+});
+
+});
+</script>
+
+<div class ="container">
+<div class = "output"></div>
+<script id="countryTemplate" type="text/x-handlebars-template">
+<table class="table table-striped">
+    <thead>
+    <tr>
+         <th>Country Code</th>
+         <th>Country Name</th>
+         <th>Population</th>
+         <th>English?</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each info}}
+    <tr id="colors" class= {{popClass}} data-index=0>
+        {{#with code}}
+        <td>{{letters}}</td>
+        {{/with}}
+
+        {{#with name}}
+        <td>{{nameValue}}</td>
+        {{/with}}
+
+        {{#with population}}
+        <td>{{value}}</td>
+        {{/with}}
+
+        {{#if className="glyphicon glyphicon-ok"}}
+        <td><span class="{{className}}"></span></td>
+        {{/if}}
+    </tr>
+    {{/each}}
+    </tbody>
+</table>
+<div class="text-success">Population > 100,000</div>
+<div class="text-danger">Population > 5,000,000</div>
+</script>
+</div>
+
+<script src="accounting.js"></script>
+
+<script type="text/javascript">
+    // Library ready to use:
+    accounting.formatMoney(5318008);
+</script>
+
+</body>
+</html>
